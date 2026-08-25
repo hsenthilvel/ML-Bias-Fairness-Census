@@ -46,3 +46,16 @@ Then open the notebooks in notebooks/ and run each from a clean kernel, in order
 
 - UCI Adult Census Income (1994), via sklearn.datasets.fetch_openml (version 2)
 - ACS PUMS (2024, 1-Year), via the folktables package, ACSIncome task (Ding et al., 2021)
+
+## Notes on environment
+
+Developed and tested locally in VS Code on Python 3.12, with the pinned versions in
+`requirements.txt`. The notebooks live in `notebooks/` and use relative paths
+(`../data/`, `../results/`) that assume this repository layout, so they are intended to
+be run from a local clone rather than uploaded individually.
+
+To run in Google Colab instead, two adjustments are needed: install the dependencies at
+the top of the notebook (`!pip install -r requirements.txt`, or the individual packages),
+and set the data and results paths to a location that exists in the Colab session, since
+the `../` layout above will not be present. The data itself needs no manual download — it
+is fetched live (UCI Adult via `fetch_openml`, ACS PUMS via `folktables`).
