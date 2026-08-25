@@ -1,0 +1,9 @@
+# Python 3.12
+# Pinned to the versions the analysis was developed and run against.
+pandas==3.0.0
+numpy==2.4.2
+scipy==1.17.0
+scikit-learn==1.8.0
+fairlearn==0.14.0
+folktables==0.0.12
+matplotlib==3.10.8
