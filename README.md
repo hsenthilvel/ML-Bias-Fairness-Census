@@ -5,9 +5,8 @@ Census Income dataset (1994) with ACS PUMS income data (2024), looking at how bi
 patterns differ across a roughly thirty-year gap.
 
 Two classifiers (Logistic Regression and Random Forest) are evaluated across five
-fairness metrics and five performance metrics on two protected attributes (sex and
-race), using Fairlearn's MetricFrame. The project measures fairness rather than
-attempting mitigation.
+fairness metrics and two protected attributes (sex and race), using Fairlearn's
+MetricFrame. The project measures fairness rather than attempting mitigation.
 
 ## Structure
 
@@ -21,17 +20,20 @@ same way, which is why neither is tracked.
 
 ## Notebooks
 
-Currently in the repo (EDA stage):
+Run in order. The EDA notebooks (01 to 03) write summary tables that the modelling and
+comparison notebooks read, so 01 and 02 must run before 03, and 04 and 05 before 06.
 
-- 01_uci_adult_eda.ipynb  — UCI Adult (1994): missingness, proxy attributes, income gaps by sex and race
-- 02_acs_pums_eda.ipynb   — ACS PUMS (2024), mirroring notebook 01 so the two are comparable
-- 03_comparison_eda.ipynb — cross-dataset comparison; reads the summary tables 01 and 02 write
+- 01_uci_adult_eda.ipynb       UCI Adult (1994): missingness, proxy attributes, income gaps by sex and race
+- 02_acs_pums_eda.ipynb        ACS PUMS (2024), mirroring 01 so the two are comparable
+- 03_comparison_eda.ipynb      cross-dataset EDA comparison; reads the tables 01 and 02 write
+- 04_modelling_uci.ipynb       UCI modelling: three experiments, plus bootstrap CIs and an intersectional audit
+- 05_modelling_acs_pums.ipynb  ACS modelling, mirroring 04, plus threshold-sensitivity and multi-seed robustness
+- 06_comparison_results.ipynb  stacks the two datasets' results and reports the cross-dataset comparisons
 
-01 and 02 stand alone. 03 depends on the CSVs they export to results/tables/, so run
-01 and 02 first, then 03.
-
-The modelling notebooks (04-06) are part of the same pipeline and will be added once
-that stage is finalised.
+Each modelling notebook runs three experiments on its dataset: a baseline with all
+features, a naive condition with the protected attributes removed, and a condition with
+the protected attributes and their strongest proxies removed. The proxies differ by
+dataset, which is why the EDA is run per dataset before modelling.
 
 ## Running it
 
@@ -40,7 +42,9 @@ Developed on Python 3.12. Install the pinned dependencies:
     pip install -r requirements.txt
 
 Then open the notebooks in notebooks/ and run each from a clean kernel, in order:
-01 -> 02 -> 03. The first run creates data/ and results/ at the repo root.
+01 -> 02 -> 03 -> 04 -> 05 -> 06. The first run creates data/ and results/ at the repo
+root. Every figure reported in the write-up is read from a generated CSV, so each number
+traces back to the notebook that produced it.
 
 ## Data sources
 
@@ -50,12 +54,12 @@ Then open the notebooks in notebooks/ and run each from a clean kernel, in order
 ## Notes on environment
 
 Developed and tested locally in VS Code on Python 3.12, with the pinned versions in
-`requirements.txt`. The notebooks live in `notebooks/` and use relative paths
-(`../data/`, `../results/`) that assume this repository layout, so they are intended to
-be run from a local clone rather than uploaded individually.
+requirements.txt. The notebooks live in notebooks/ and use relative paths (../data/,
+../results/) that assume this repository layout, so they are intended to be run from a
+local clone rather than uploaded individually.
 
 To run in Google Colab instead, two adjustments are needed: install the dependencies at
-the top of the notebook (`!pip install -r requirements.txt`, or the individual packages),
+the top of the notebook (!pip install -r requirements.txt, or the individual packages),
 and set the data and results paths to a location that exists in the Colab session, since
-the `../` layout above will not be present. The data itself needs no manual download — it
-is fetched live (UCI Adult via `fetch_openml`, ACS PUMS via `folktables`).
+the ../ layout above will not be present. The data itself needs no manual download, as it
+is fetched live (UCI Adult via fetch_openml, ACS PUMS via folktables).
