@@ -1,5 +1,5 @@
 # Data (fetched live; never committed)
-data/
+data/raw/
 
 # Generated results (created on notebook run)
 results/
@@ -25,3 +25,5 @@ ENV/
 Thumbs.db
 .vscode/
 .idea/
+data/2024/
+notebooks/data/
